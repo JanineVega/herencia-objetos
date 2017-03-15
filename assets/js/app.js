@@ -1,8 +1,8 @@
 // Definimos el constructor Persona
-
- var primerNombre=document.getElementById("nombre").value;
-  function Persona(primerNombre) {
+  function Persona(primerNombre, edad, genero) {
   this.primerNombre = primerNombre;
+  this.edad=edad;
+  this.genero=genero;
 }
 
 // Agregamos un par de métodos a Persona.prototype
@@ -14,13 +14,13 @@ Persona.prototype.diHola = function(){
 };
 
 // Definimos el constructor Estudiante
-function Estudiante(primerNombre, asignatura) {
+function Estudiante(primerNombre,curso) {
   // Llamamos al constructor padre, nos aseguramos (utilizando Function#call) que "this" se
   // ha establecido correctamente durante la llamada
   Persona.call(this, primerNombre);
 
   //Inicializamos las propiedades específicas de Estudiante
-  this.asignatura = asignatura;
+  this.curso = curso;
 };
 
 // Creamos el objeto Estudiante.prototype que hereda desde Persona.prototype
@@ -35,7 +35,7 @@ Estudiante.prototype.constructor = Estudiante;
 
 // Remplazar el método "diHola"
 Estudiante.prototype.diHola = function(){
-  return ("Hola, Soy " + this.primerNombre + ". Estoy estudiando " + this.asignatura + ".");
+  return ("Hola, Soy " + this.primerNombre + ". Estoy estudiando " + this.curso + ".");
 };
 
 // Agregamos el método "diAdios"
@@ -47,8 +47,8 @@ Estudiante.prototype.diAdios = function() {
 var loginButton = document.getElementById("enviar");
 loginButton.addEventListener('click',function() {
 var nombre= document.getElementById("nombre").value;
-var asignatura=document.getElementById("asignatura").value;
-var estudiante1 = new Estudiante(nombre, asignatura);
+var curso=document.getElementById("curso").value;
+var estudiante1 = new Estudiante(nombre, curso);
     // muestra "Hola, Soy Carolina. Estoy estudianto Física Aplicada."
 var elemento=document.createElement("div");
 var contenido=document.createTextNode(estudiante1.diHola());
