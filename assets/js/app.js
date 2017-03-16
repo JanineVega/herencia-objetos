@@ -1,67 +1,83 @@
 // Definimos el constructor Persona
-  function Persona(primerNombre, edad, genero) {
-  this.primerNombre = primerNombre;
-  this.edad=edad;
-  this.genero=genero;
+function Persona(primerNombre,edad,genero) {
+    this.primerNombre = primerNombre;
+    this.edad         = edad;
+    this.genero       = genero;
 }
 
-// Agregamos un par de métodos a Persona.prototype
-Persona.prototype.caminar = function() {
-  return "Estoy caminando! ";
-};
-Persona.prototype.diHola = function(){
-  alert("Hola, Soy" + this.primerNombre);
+Persona.prototype.obtDetalles = function() {
+  return "Nombre: "   + this.primerNombre +
+          "Edad: "    + this.edad +
+          "Genero: "  + this.genero;
 };
 
-// Definimos el constructor Estudiante
-function Estudiante(primerNombre,curso) {
-  // Llamamos al constructor padre, nos aseguramos (utilizando Function#call) que "this" se
-  // ha establecido correctamente durante la llamada
-  Persona.call(this, primerNombre);
-
-  //Inicializamos las propiedades específicas de Estudiante
+function Estudiante(primerNombre, edad,genero, curso, grupo) {
+  Persona.call(this, primerNombre,edad,genero);
   this.curso = curso;
+
+  this.grupo=grupo;
 };
 
-// Creamos el objeto Estudiante.prototype que hereda desde Persona.prototype
-// Nota: Un error común es utilizar "new Persona()" para crear Estudiante.prototype
-// Esto es incorrecto por varias razones, y no menos importante que no le estamos pasando nada
-// a Persona desde el argumento "primerNombre". El lugar correcto para llamar a Persona
-// es arriba, donde llamamos a Estudiante.
-Estudiante.prototype = Object.create(Persona.prototype);    // Vea las siguientes notas
-
-// Establecer la propiedad "constructor" para referencias a Estudiante
+Estudiante.prototype = Object.create(Persona.prototype);
 Estudiante.prototype.constructor = Estudiante;
 
-// Remplazar el método "diHola"
-Estudiante.prototype.diHola = function(){
-  return ("Hola, Soy " + this.primerNombre + ". Estoy estudiando " + this.curso + ".");
+// Mostrar el método "diHola"
+Estudiante.prototype.registrar = function(){
+  return ("Nombre: "  + this.primerNombre +
+          " Edad: "    + this.edad +
+          "Genero: "  + this.genero+
+          "Curso: "   + this.curso+
+          "Grupo: "   + this.grupo + ".");
 };
 
-// Agregamos el método "diAdios"
-Estudiante.prototype.diAdios = function() {
-  alert("¡ Adios !");
+function Profesor(primerNombre, edad,genero, asignatura, nivel) {
+  Persona.call(this, primerNombre,edad,genero);
+  this.asignatura = asignatura;
+  this.nivel=nivel;
 };
 
+Profesor.prototype = Object.create(Persona.prototype);
+Profesor.prototype.constructor = Profesor;
+
+
+Profesor.prototype.asignar = function(){
+  return ("Nombre: "  + this.primerNombre +
+          "Edad: "    + this.edad +
+          "Genero: "  + this.genero+
+          "Asignatura: "   + this.asignatura+
+          "Nivel: "   + this.nivel + ".");
+};
 // Ejemplos de uso
 var loginButton = document.getElementById("enviar");
 loginButton.addEventListener('click',function() {
-var nombre= document.getElementById("nombre").value;
-var curso=document.getElementById("curso").value;
-var estudiante1 = new Estudiante(nombre, curso);
-    // muestra "Hola, Soy Carolina. Estoy estudianto Física Aplicada."
-var elemento=document.createElement("div");
-var contenido=document.createTextNode(estudiante1.diHola());
-var cont=document.createTextNode(estudiante1.caminar());
-elemento.appendChild(contenido);
-elemento.appendChild(cont);
-        // imprimir.innerHTML=mostrar.ficha();
-var padre=document.getElementById("datos");
-   padre.appendChild(elemento);
+var nombre  = document.getElementById("nombre").value;
+var edad    = document.getElementById("edad").value;
+var genero  = document.getElementById("genero").value;
+var curso   = document.getElementById("curso").value;
+var grupo   = document.getElementById("grupo").value;
+var asignatura=document.getElementById("asignatura").value;
+var nivel   = document.getElementById("nivel").value;
 
-//estudiante1.caminar();   // muestra "Yo estoy caminando !"
-//estudiante1.diAdios();   // muestra "¡ Adios !"
-// Comprobamos que las instancias funcionan correctamente
-//alert(estudiante1 instanceof Persona);      // devuelve true
-//alert(estudiante1 instanceof Estudiante);   // devuelve true
+var persona1    = new Persona(nombre, edad,genero);
+var estudiante1 = new Estudiante(nombre, edad,genero,curso, grupo);
+var profesor1   = new Profesor(nombre, edad,genero,asignatura, nivel);
+
+var elemento    = document.createElement("div");
+elemento.classList.add("un-paciente");
+var elemento2   = document.createElement("div");
+elemento2.classList.add("un-paciente");
+var elemento3   = document.createElement("div");
+elemento3.classList.add("un-paciente");
+var contenido1  = document.createTextNode(persona1.obtDetalles());
+var contenido2  = document.createTextNode(estudiante1.registrar());
+var contenido3  = document.createTextNode(profesor1.asignar());
+elemento2.appendChild(contenido1);
+elemento.appendChild(contenido2);
+elemento3.appendChild(contenido3);
+
+var padre=document.getElementById("datos");
+ padre.appendChild(elemento2);
+ padre.appendChild(elemento);
+ padre.appendChild(elemento3);
+
  });
